@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_gemini/home_page.dart';
+import 'package:google_gemini/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,10 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
-      ),
-      home: const HomeScreen(),
+          buttonTheme: const ButtonThemeData(buttonColor: Colors.white),
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.grey.shade800,
+          primaryColor: Colors.deepPurple.shade300),
+      home: HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
