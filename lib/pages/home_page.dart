@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: const Text(
-                          'G E M I N I',
+                          'G E M I N I A I',
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
