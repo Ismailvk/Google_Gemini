@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.paddingOf(context).top;
     return Scaffold(
       body: BlocConsumer<ChatBloc, ChatState>(
         bloc: chatBloc,
@@ -36,7 +35,8 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: size, left: 20),
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top, left: 20),
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: const Text(
@@ -46,38 +46,27 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                        child: ListView.builder(
-                      itemCount: message.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Container(
-                            alignment: message[index].role == 'user'
-                                ? Alignment.topRight
-                                : Alignment.topLeft,
-                            child: Row(
-                              mainAxisAlignment: message[index].role == 'user'
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                message[index].role == 'user'
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(
-                                            message[index].parts.first.text,
-                                            style:
-                                                const TextStyle(fontSize: 17),
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      )
-                                    : SizedBox(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(8),
+                        itemCount: message.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              alignment: message[index].role == 'user'
+                                  ? Alignment.topRight
+                                  : Alignment.topLeft,
+                              child: Row(
+                                mainAxisAlignment: message[index].role == 'user'
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (message[index].role != 'user')
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: SizedBox(
                                         height: 35,
                                         width: 35,
                                         child: ClipRRect(
@@ -89,33 +78,51 @@ class HomeScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                const SizedBox(width: 8),
-                                message[index].role == 'user'
-                                    ? const CircleAvatar(
-                                        radius: 20, child: Text('You'))
-                                    : Expanded(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8),
-                                            child: Text(
-                                              message[index].parts.first.text,
-                                              style:
-                                                  const TextStyle(fontSize: 17),
-                                            ),
+                                    ),
+                                  if (message[index].role == 'user')
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          message[index].parts.first.text,
+                                          style: const TextStyle(fontSize: 17),
+                                        ),
+                                      ),
+                                    ),
+                                  if (message[index].role != 'user')
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Text(
+                                            message[index].parts.first.text,
+                                            style:
+                                                const TextStyle(fontSize: 17),
                                           ),
                                         ),
                                       ),
-                              ],
+                                    ),
+                                  if (message[index].role == 'user')
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 8.0),
+                                      child: CircleAvatar(
+                                          radius: 20, child: Text('You')),
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    )),
+                          );
+                        },
+                      ),
+                    ),
                     if (chatBloc.generate)
                       Center(
                           child: Lottie.asset('assets/loader.json',
